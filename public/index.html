@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Owl Exchange - Proof of Concept</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 640px; margin: 40px auto; color: #222; }
+  h1 { color: #9e1b32; }
+  form { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+  input, select, button { padding: 8px; font-size: 14px; }
+  button { background: #9e1b32; color: white; border: none; cursor: pointer; }
+  .listing { border: 1px solid #ddd; border-radius: 6px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .listing button { background: #666; }
+</style>
+</head>
+<body>
+  <h1>Owl Exchange</h1>
+  <p>Temple's student-to-student marketplace (proof of concept)</p>
+
+  <form id="listing-form">
+    <input type="text" id="title" placeholder="Item title" required>
+    <input type="number" id="price" placeholder="Price ($)" required>
+    <select id="category">
+      <option>Textbooks</option>
+      <option>Dorm</option>
+      <option>Electronics</option>
+      <option>Clothing</option>
+      <option>Other</option>
+    </select>
+    <input type="text" id="seller" placeholder="Your username" required>
+    <button type="submit">Post Listing</button>
+  </form>
+
+  <div id="listings"></div>
+
+  <script>
+    const listEl = document.getElementById('listings');
+
+    async function loadListings() {
+      const res = await fetch('/api/listings');
+      const data = await res.json();
+      listEl.innerHTML = '';
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'listing';
+        div.innerHTML = `
+          <div>
+            <strong>${item.title}</strong> — $${item.price}<br>
+            <small>${item.category} · posted by ${item.seller}</small>
+          </div>
+          <button onclick="markSold(${item.id})">Mark Sold</button>
+        `;
+        listEl.appendChild(div);
+      });
+    }
+
+    async function markSold(id) {
+      await fetch(`/api/listings/${id}`, { method: 'DELETE' });
+      loadListings();
+    }
+
+    document.getElementById('listing-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {
+        title: document.getElementById('title').value,
+        price: document.getElementById('price').value,
+        category: document.getElementById('category').value,
+        seller: document.getElementById('seller').value
+      };
+      await fetch('/api/listings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      e.target.reset();
+      loadListings();
+    });
+
+    loadListings();
+  </script>
+</body>
+</html>
