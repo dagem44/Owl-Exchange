@@ -29,7 +29,7 @@ let listings = [
 ];
 let nextId = 3;
 
-// GET /api/listings
+// GET listings
 app.get('/api/listings', (req, res) => {
   const { category } = req.query;
   const results = category
@@ -38,7 +38,7 @@ app.get('/api/listings', (req, res) => {
   res.json(results);
 });
 
-// POST /api/listings 
+// POST listings
 app.post('/api/listings', (req, res) => {
   const { title, price, category, seller } = req.body;
   if (!title || !price || !category || !seller) {
