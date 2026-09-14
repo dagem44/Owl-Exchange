@@ -1,6 +1,6 @@
 # Owl Exchange — Proof of Concept
 
-A minimal, working slice of the Owl Exchange architecture (Node.js/Express backend + REST API + static frontend). This is not the full project — it exists to demonstrate that the chosen stack compiles, runs, and can serve a frontend that talks to a backend API, per the CIS 3296 proof-of-concept requirement.
+A minimal, working slice of the Owl Exchange architecture (Node.js/Express backend + REST API + static frontend). This is not the full project, it just shows that the chosen stack compiles, runs, and can serve a frontend that talks to a backend API. 
 
 ## What it demonstrates
 - Express server serving a REST API (`GET /api/listings`, `POST /api/listings`, `DELETE /api/listings/:id`)
@@ -22,7 +22,7 @@ Then open `http://localhost:3000` in a browser.
 
 ## Next steps for the full project
 - Replace in-memory storage with SQLite (or Postgres) for persistence
-- Add user accounts / authentication
+- Add user account and authentication
 - Add image upload for listings
 - Add search and category filtering on the frontend
 - Add a messaging system between buyer and seller
